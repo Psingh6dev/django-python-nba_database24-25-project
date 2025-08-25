@@ -1,0 +1,11 @@
+<h1>{{ team|title }} Players</h1>
+
+{% if stats %}
+    <ul>
+        {% for player in stats %}
+            <li>{{ player }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No data found for this team.</p>
+{% endif %}
