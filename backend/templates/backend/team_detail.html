@@ -1,4 +1,6 @@
-<h1>{{ team|title }} Players</h1>
+<!-- backend/templates/backend/team_detail.html -->
+
+<h1>{{ team }} Players</h1>
 
 {% if stats %}
     <ul>
@@ -9,3 +11,5 @@
 {% else %}
     <p>No data found for this team.</p>
 {% endif %}
+
+<a href="{% url 'team_stats' %}">Back to Team Search</a>

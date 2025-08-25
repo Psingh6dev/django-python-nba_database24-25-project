@@ -1,14 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Team Stats</title>
-</head>
-<body>
-    <h1>Search for a Team</h1>
-    <form method="get">
-        <input type="text" name="team" placeholder="Enter team (e.g. lakers)">
-        <button type="submit">Search</button>
-    </form>
-</body>
-</html>
+<!-- backend/templates/backend/team_stats.html -->
+
+<h1>NBA Team Stats Search</h1>
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<form method="get" action="{% url 'team_stats' %}">
+    <label for="team">Enter a team name:</label>
+    <input type="text" id="team" name="team" placeholder="e.g., Lakers">
+    <button type="submit">Search</button>
+</form>
+
+<h2>Available Teams:</h2>
+<ul>
+    {% for team in teams %}
+        <li>{{ team|title }}</li>
+    {% endfor %}
+</ul>
+
 

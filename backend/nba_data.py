@@ -247,7 +247,7 @@ def nba_data():
         Shai Gigeous Alexander, Giannis Antetokoumpo, Nikola Jokic, Kyrie Irving, Jaylen Brown, 
         James Harden, Damian Lillard, Kevin Durant, Jayson Tatum, Anthony Davis, Steph Curry, 
         Lebron James 
-        """
+        """ 
 
 
     teams = {
@@ -281,4 +281,9 @@ def nba_data():
         "hornets": hornets,
         "wizards": wizards,
         "magic": magic
+        
     }
+    return teams
+    
+
+ 
