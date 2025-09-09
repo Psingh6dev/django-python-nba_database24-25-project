@@ -32,19 +32,51 @@ def team_stats(request):
     })
 
 
+def parse_team_data(team_string):
+    players = []
+    for line in team_string.strip().split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        # "LeBron James:(24.4 ppg, 8.2 apg, 7.8 rpg, 0.513* fg)"
+        if ":" in line:
+            name, stats = line.split(":", 1)
+            name = name.strip()
+            stats = stats.strip("() ")  # remove parentheses
+            stat_parts = [s.strip() for s in stats.split(",")]
+
+            player = {"name": name}
+            # Assign stats safely
+            for part in stat_parts:
+                if "ppg" in part:
+                    player["ppg"] = part
+                elif "apg" in part:
+                    player["apg"] = part
+                elif "rpg" in part:
+                    player["rpg"] = part
+                elif "fg" in part.lower():
+                    player["fg"] = part
+            players.append(player)
+    return players
+
+
+
 def team_detail(request, team_name):
-    team_name = team_name.lower()
-    
-    # Call the function to get the teams dictionary
     teams_dict = nba_data.nba_data()
-    
-    stats_string = teams_dict.get(team_name, "")  # Get the stats string
-    
-    # Split the string into lines for the template
-    stats = [line.strip() for line in stats_string.strip().split("\n") if line.strip()]
-    
-    return render(request, 'backend/team_detail.html', {
-        'team': team_name.title(),
-        'stats': stats,
-    })
+    team_key = team_name.lower()
+
+    if team_key in teams_dict:
+        raw_data = teams_dict[team_key]
+        players = parse_team_data(raw_data)
+
+        return render(request, "backend/team_detail.html", {
+            "team_name": team_key.title(),
+            "players": players,
+        })
+    else:
+        return render(request, "backend/team_detail.html", {
+            "team_name": team_key.title(),
+            "players": [],
+        })
+
 

@@ -1,15 +1,44 @@
-<!-- backend/templates/backend/team_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ team_name }} Stats</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 20px; }
+        h1 { text-align: center; }
+        table { width: 80%; margin: auto; border-collapse: collapse; background: white; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background: #333; color: white; }
+        tr:nth-child(even) { background: #f2f2f2; }
+        .back-link { display: block; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>{{ team_name }} Player Stats</h1>
 
-<h1>{{ team }} Players</h1>
-
-{% if stats %}
-    <ul>
-        {% for player in stats %}
-            <li>{{ player }}</li>
+    {% if players %}
+    <table>
+        <tr>
+            <th>Player</th>
+            <th>PPG</th>
+            <th>APG</th>
+            <th>RPG</th>
+            <th>FG%</th>
+        </tr>
+        {% for player in players %}
+        <tr>
+            <td>{{ player.name }}</td>
+            <td>{{ player.ppg }}</td>
+            <td>{{ player.apg }}</td>
+            <td>{{ player.rpg }}</td>
+            <td>{{ player.fg }}</td>
+        </tr>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>No data found for this team.</p>
-{% endif %}
+    </table>
+    {% else %}
+        <p style="text-align:center;">No stats available for {{ team_name }}</p>
+    {% endif %}
 
-<a href="{% url 'team_stats' %}">Back to Team Search</a>
+    <a href="{% url 'team_stats' %}" class="back-link">← Back to Search</a>
+</body>
+</html>
+

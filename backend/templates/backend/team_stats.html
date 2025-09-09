@@ -1,22 +1,176 @@
-<!-- backend/templates/backend/team_stats.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NBA Team Stats Search</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
+      color: white;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
 
-<h1>NBA Team Stats Search</h1>
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
 
-{% if error %}
-    <p style="color:red;">{{ error }}</p>
-{% endif %}
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    }
 
-<form method="get" action="{% url 'team_stats' %}">
-    <label for="team">Enter a team name:</label>
-    <input type="text" id="team" name="team" placeholder="e.g., Lakers">
-    <button type="submit">Search</button>
-</form>
+    .error-message {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fecaca;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 500;
+    }
 
-<h2>Available Teams:</h2>
-<ul>
-    {% for team in teams %}
-        <li>{{ team|title }}</li>
-    {% endfor %}
-</ul>
+    .search-form {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
 
+    label {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      font-size: 1rem;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #ff6b35;
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    }
+
+    button {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border: none;
+      color: white;
+      padding: 0.9rem 1.8rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      display: block;
+      width: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(255, 107, 53, 0.5);
+    }
+
+    .teams-section {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #f7931e;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .team-item {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: capitalize;
+    }
+
+    .team-item:hover {
+      background: rgba(255, 107, 53, 0.25);
+      border-color: #ff6b35;
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>NBA Team Stats Search</h1>
+
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <div class="search-form">
+      <form method="get" action="{% url 'team_stats' %}" id="searchForm">
+        <label for="team">Enter a team name:</label>
+        <input type="text" id="team" name="team" placeholder="e.g., lakers, warriors, celtics..." autocomplete="off">
+        <button type="submit">Search Team</button>
+      </form>
+    </div>
+
+    <div class="teams-section">
+      <h2>Available Teams</h2>
+      <div class="teams-grid">
+        {% for team in teams %}
+          <div class="team-item" onclick="selectTeam('{{ team }}')">
+            {{ team|title }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectTeam(teamName) {
+      const input = document.getElementById('team');
+      input.value = teamName;
+      input.focus();
+    }
+  </script>
+</body>
+</html>
 
